@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { DatePicker } from "@material-ui/pickers";
 
-const YearMonthPicker = ({ onDateChange }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const YearMonthPicker = ({ onDateChange, currentDate }) => {
+  const [selectedDate, setSelectedDate] = useState(currentDate);
 
   return (
     <DatePicker

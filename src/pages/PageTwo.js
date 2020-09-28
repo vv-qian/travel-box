@@ -4,13 +4,25 @@ import Link from "../components/Link";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 
-const PageTwo = ({ country, onInfoSelect }) => {
+const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
   const [topics, setTopics] = useState([]);
 
   const onTopicChange = (evt, newTopics) => {
     setTopics(newTopics);
     onInfoSelect(newTopics);
   };
+
+  const renderToggleButtons = topicOptions.map((option, i) => {
+    return (
+      <ToggleButton
+        key={`topic-option-${i}`}
+        value={option.value}
+        aria-label={option.label}
+      >
+        {option.label}
+      </ToggleButton>
+    );
+  });
 
   return (
     <div>
@@ -25,15 +37,7 @@ const PageTwo = ({ country, onInfoSelect }) => {
             onChange={onTopicChange}
             aria-label="topic selection"
           >
-            <ToggleButton value="forex" aria-label="forex">
-              Currency
-            </ToggleButton>
-            <ToggleButton value="holidays" aria-label="holidays">
-              Holidays
-            </ToggleButton>
-            <ToggleButton value="anything" aria-label="anything">
-              Anything
-            </ToggleButton>
+            {renderToggleButtons}
           </ToggleButtonGroup>
         </div>
         <Link href="/" className="navigate">

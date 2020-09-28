@@ -6,7 +6,13 @@ import ComboBox from "../components/ComboBox";
 import Link from "../components/Link";
 import Button from "@material-ui/core/Button";
 
-const PageOne = ({ countries, onSelectCountry, onSelectDate }) => {
+const PageOne = ({
+  countries,
+  onSelectCountry,
+  onSelectDate,
+  currentDate,
+  currentCountry,
+}) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div>
@@ -17,11 +23,15 @@ const PageOne = ({ countries, onSelectCountry, onSelectDate }) => {
             labelAccessor={"country"}
             defaultText="Choose a country"
             onInputChange={onSelectCountry}
+            currentCountry={currentCountry}
           />
         </div>
         <div className="question">
           <h5>When's the earliest you think you would go?</h5>
-          <YearMonthPicker onDateChange={onSelectDate} />
+          <YearMonthPicker
+            onDateChange={onSelectDate}
+            currentDate={currentDate}
+          />
           <Link href="/unbox" className="navigate">
             <Button variant="contained">Skip to end</Button>
           </Link>

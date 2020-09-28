@@ -4,35 +4,10 @@ import PageOne from "./pages/PageOne";
 import PageTwo from "./pages/PageTwo";
 import PageThree from "./pages/PageThree";
 
-const countries = [
-  {
-    country: "Norway",
-    currency: "NOK",
-    currencyName: "Norwegian krone",
-    countryCode: "NOR",
-  },
-  {
-    country: "Taiwan",
-    currency: "TWD",
-    currencyName: "New Taiwan dollar",
-    countryCode: "TWN",
-  },
-  {
-    country: "Turkey",
-    currency: "TRY",
-    currencyName: "Turkish lira",
-    countryCode: "TUR",
-  },
-  {
-    country: "Chile",
-    currency: "CLP",
-    currencyName: "Chilean Peso",
-    countryCode: "CHL",
-  },
-];
+import { topicOptions, countries } from "./utils/data";
 
 const App = () => {
-  const [country, setCountry] = useState(countries[0]);
+  const [country, setCountry] = useState(null);
   const [date, setDate] = useState(new Date());
   const [info, setInfo] = useState([]);
 
@@ -47,13 +22,23 @@ const App = () => {
           countries={countries}
           onSelectCountry={setCountry}
           onSelectDate={setDate}
+          currentDate={date}
+          currentCountry={country}
         />
       </Route>
       <Route path="/info">
-        <PageTwo country={country} onInfoSelect={setInfo} />
+        <PageTwo
+          country={country}
+          onInfoSelect={setInfo}
+          topicOptions={topicOptions}
+        />
       </Route>
       <Route path="/unbox">
-        <PageThree />
+        <PageThree
+          selectedCountry={country}
+          selectedDate={date}
+          topics={info}
+        />
       </Route>
     </div>
   );

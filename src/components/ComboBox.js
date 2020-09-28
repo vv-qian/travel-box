@@ -2,7 +2,13 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const ComboBox = ({ options, labelAccessor, defaultText, onInputChange }) => {
+const ComboBox = ({
+  options,
+  labelAccessor,
+  defaultText,
+  onInputChange,
+  currentCountry,
+}) => {
   return (
     <Autocomplete
       options={options}
@@ -13,6 +19,7 @@ const ComboBox = ({ options, labelAccessor, defaultText, onInputChange }) => {
           onInputChange(value);
         }
       }}
+      value={currentCountry ? currentCountry : null}
       renderInput={(params) => (
         <TextField {...params} label={defaultText} variant="outlined" />
       )}
