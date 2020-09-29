@@ -18,15 +18,11 @@ const PageOne = ({
 }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid
-        container
-        direction="column"
-        alignItems="flex-start"
-        spacing={5}
-        className="page page_one"
-      >
+      <Grid container direction="column" alignItems="flex-start" spacing={5}>
         <Grid item className="question">
-          <Question text="When this time passes, which country would you travel to?" />
+          <Question>
+            When this time passes, which country would you travel to?
+          </Question>
           <ComboBox
             options={countries}
             labelAccessor={"country"}

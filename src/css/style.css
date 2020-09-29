@@ -2,23 +2,3 @@ body,
 html {
   font-family: "Roboto";
 }
-
-/* Header.js */
-.header {
-  margin: 2rem 0;
-  text-align: center;
-}
-
-.header h1 {
-  display: inline-block;
-  letter-spacing: 0.3rem;
-  color: coral;
-}
-
-.header span {
-  color: coral;
-}
-
-a.navigate {
-  text-decoration: none;
-}
