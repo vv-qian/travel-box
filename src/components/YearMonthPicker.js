@@ -9,9 +9,10 @@ const YearMonthPicker = ({ onDateChange, currentDate }) => {
       variant="inline"
       openTo="year"
       views={["year", "month"]}
-      label="Year and Month"
+      label="Choose a year and month"
       minDate={new Date()}
       value={selectedDate}
+      style={{ width: 350 }}
       onChange={(date) => {
         setSelectedDate(date);
         onDateChange(date);

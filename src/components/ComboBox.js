@@ -13,7 +13,7 @@ const ComboBox = ({
     <Autocomplete
       options={options}
       getOptionLabel={(option) => option[labelAccessor]}
-      style={{ width: 300 }}
+      style={{ width: 350 }}
       onChange={(evt, value) => {
         if (value) {
           onInputChange(value);

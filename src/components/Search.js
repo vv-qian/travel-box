@@ -22,6 +22,8 @@ const Search = ({ term }) => {
     search();
   }, [term]);
 
+  // use https://material-ui.com/components/cards/
+
   const renderedResults = results.map((result) => {
     return (
       <div key={result.pageid} className="item">
