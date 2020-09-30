@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import YearMonthPicker from "../components/YearMonthPicker";
 import ComboBox from "../components/ComboBox";
 import Link from "../components/Link";
-import Question from "../components/Question";
+import Subhed from "../components/Subhed";
 
 const PageOne = ({
   countries,
@@ -19,10 +19,10 @@ const PageOne = ({
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container direction="column" alignItems="flex-start" spacing={5}>
-        <Grid item className="question">
-          <Question>
+        <Grid item>
+          <Subhed>
             When this time passes, which country would you travel to?
-          </Question>
+          </Subhed>
           <ComboBox
             options={countries}
             labelAccessor={"country"}
@@ -31,8 +31,8 @@ const PageOne = ({
             currentCountry={currentCountry}
           />
         </Grid>
-        <Grid item className="question">
-          <Question text="When's the earliest you think you would go?" />
+        <Grid item>
+          <Subhed>When's the earliest you think you would go?</Subhed>
           <YearMonthPicker
             onDateChange={onSelectDate}
             currentDate={currentDate}
@@ -40,7 +40,7 @@ const PageOne = ({
         </Grid>
         <Grid container item justify="space-between">
           <Grid item>
-            <Link href="/info" className="navigate">
+            <Link href="/info">
               <Button
                 variant="contained"
                 disabled={currentCountry === null || currentDate === null}
@@ -50,7 +50,7 @@ const PageOne = ({
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/unbox" className="navigate">
+            <Link href="/unbox">
               <Button
                 variant="contained"
                 disabled={currentCountry === null || currentDate === null}

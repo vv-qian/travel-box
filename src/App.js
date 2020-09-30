@@ -11,8 +11,9 @@ import Container from "@material-ui/core/Container";
 import { topicOptions, countries } from "./utils/data";
 
 const App = () => {
-  const [country, setCountry] = useState(null);
-  const [date, setDate] = useState(null);
+  // TODO: change states to null
+  const [country, setCountry] = useState(countries[0]);
+  const [date, setDate] = useState(new Date());
   const [info, setInfo] = useState([]);
 
   return (
@@ -41,11 +42,13 @@ const App = () => {
           </Container>
         </Route>
         <Route path="/unbox">
-          <PageThree
-            selectedCountry={country}
-            selectedDate={date}
-            topics={info}
-          />
+          <Container maxWidth="sm">
+            <PageThree
+              selectedCountry={country}
+              selectedDate={date}
+              topics={info}
+            />
+          </Container>
         </Route>
       </Container>
     </React.Fragment>

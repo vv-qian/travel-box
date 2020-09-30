@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import numberWithCommas from "../utils/numberWithCommas";
+import { forexHttp } from "../apis/http";
 
 const Forex = ({ currencyCode, currencyName }) => {
   const [results, setResults] = useState([]);
   const latest = new Date().getDate();
 
-  // TODO: cache
+  // TODO: cache these by hour
   useEffect(() => {
     const retrieve = async () => {
-      const { data } = await axios.get("http://api.currencylayer.com/live", {
-        params: {
-          access_key: "2be2df7519e3d3b50214076fe8ad1d76",
-        },
-      });
+      const { data } = await forexHttp.get("/live");
       setResults(data.quotes);
     };
 
@@ -20,10 +17,14 @@ const Forex = ({ currencyCode, currencyName }) => {
   }, [latest]);
 
   return (
-    <div>
-      Current exchange rates from the U.S. dollar to {currencyName} is
-      {results[`USD${currencyCode}`]}.
-    </div>
+    <React.Fragment>
+      <div>
+        The current U.S. dollar to {currencyName} exchange rate is{" "}
+        {results[`USD${currencyCode}`]}, meaning $100 would convert to{" "}
+        {numberWithCommas((results[`USD${currencyCode}`] * 100).toFixed(2))}{" "}
+        {currencyName}.
+      </div>
+    </React.Fragment>
   );
 };
 

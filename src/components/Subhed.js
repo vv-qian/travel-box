@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 
-const Question = ({ children }) => {
+const Subhed = ({ children }) => {
   return (
     <Typography variant="h6" gutterBottom>
       {children}
@@ -9,4 +9,4 @@ const Question = ({ children }) => {
   );
 };
 
-export default Question;
+export default Subhed;

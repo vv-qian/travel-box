@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { wikiHttp } from "../apis/http";
 
-const Search = ({ term }) => {
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
+const useStyles = makeStyles({
+  root: {
+    marginBottom: "0.9rem",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  content: {
+    fontSize: 14,
+  },
+  title: {
+    color: "black",
+    fontWeight: 500,
+  },
+  snippet: {
+    fontStyle: "italic",
+  },
+  navigate: {
+    textDecoration: "none",
+  },
+});
+
+const Search = ({ term, cap }) => {
+  const classes = useStyles();
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     const search = async () => {
-      console.log("searched");
-      const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+      const { data } = await wikiHttp.get("/api.php", {
         params: {
-          action: "query",
-          list: "search",
-          origin: "*",
-          format: "json",
           srsearch: term,
         },
       });
@@ -22,32 +46,32 @@ const Search = ({ term }) => {
     search();
   }, [term]);
 
-  // use https://material-ui.com/components/cards/
-
-  const renderedResults = results.map((result) => {
+  const renderedResults = results.slice(0, cap).map((result) => {
     return (
-      <div key={result.pageid} className="item">
-        <div className="right floated content">
+      <Card key={result.pageid} className={classes.root}>
+        <CardContent className={classes.content}>
+          <Typography variant="subtitle1" className={classes.title}>
+            {result.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            className={classes.snippet}
+            dangerouslySetInnerHTML={{ __html: result.snippet + "..." }}
+          />
+        </CardContent>
+        <CardActions>
           <a
             href={`https://en.wikipedia.org?curid=${result.pageid}`}
-            className="ui button"
+            className={classes.navigate}
           >
-            Go
+            <Button size="small">Go</Button>
           </a>
-        </div>
-        <div className="content">
-          <div className="header">{result.title}</div>
-          <span dangerouslySetInnerHTML={{ __html: result.snippet }}></span>
-        </div>
-      </div>
+        </CardActions>
+      </Card>
     );
   });
 
-  return (
-    <div>
-      <div className="ui celled list">{renderedResults}</div>
-    </div>
-  );
+  return <div>{renderedResults}</div>;
 };
 
 export default Search;

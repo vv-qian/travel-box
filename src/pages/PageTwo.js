@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Link from "../components/Link";
-import Question from "../components/Question";
+import Subhed from "../components/Subhed";
 
 const topicButtonStyles = makeStyles(
   {
@@ -21,11 +21,11 @@ const topicButtonStyles = makeStyles(
       "&.Mui-selected": {
         backgroundColor: "rgba(255, 127, 80, 0.13)",
         "&:hover": {
-          backgroundColor: "rgba(255, 127, 80, 0.04)",
+          backgroundColor: "rgba(255, 127, 80, 0.2)",
         },
       },
       "&.Mui-focused": {
-        backgroundColor: "rgba(255, 127, 80, 0.13)",
+        backgroundColor: "rgba(255, 127, 80, 0.5)",
       },
     },
   },
@@ -48,7 +48,6 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
         value={option.value}
         aria-label={option.label}
         classes={{ root: classes.root }}
-        disableRipple
       >
         {option.label}
       </ToggleButton>
@@ -57,11 +56,11 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
 
   return (
     <Grid container direction="column" alignItems="flex-start" spacing={5}>
-      <Grid item className="question">
-        <Question>
+      <Grid item>
+        <Subhed>
           To help kick off your travel, choose what topics you're interested in
           learning about {country.country}.
-        </Question>
+        </Subhed>
         <ToggleButtonGroup
           value={topics}
           onChange={onTopicChange}
@@ -72,13 +71,8 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
       </Grid>
       <Grid container item justify="space-between">
         <Grid item>
-          <Link href="/unbox" className="navigate">
+          <Link href="/unbox">
             <Button variant="contained">See results</Button>
-          </Link>
-        </Grid>
-        <Grid item>
-          <Link href="/" className="navigate">
-            <Button variant="contained">Go back</Button>
           </Link>
         </Grid>
       </Grid>
