@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import numberWithCommas from "../utils/numberWithCommas";
+import { numberWithCommas } from "../utils/utilities";
 import { forexHttp } from "../apis/http";
 
 const Forex = ({ currencyCode, currencyName }) => {

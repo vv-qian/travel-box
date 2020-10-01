@@ -59,7 +59,7 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
       <Grid item>
         <Subhed>
           To help kick off your travel, choose what topics you're interested in
-          learning about {country.country}.
+          learning about {country.country}. Or, continue to see the results.
         </Subhed>
         <ToggleButtonGroup
           value={topics}

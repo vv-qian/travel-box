@@ -1,4 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { baseMonths } from "../utils/data";
+import { range } from "../utils/utilities";
+import Heatmap from "../components/Heatmap";
+
+const generateBinData = (results) => {
+  if (!results) {
+    return [];
+  }
+  let binData = [];
+  const years = Object.keys(results);
+  const yearRange = range(Math.min(...years), Math.max(...years));
+  // const binGap =
+
+  yearRange.forEach((year, i) => {
+    const bin = { bin: i + 1 };
+    const yearResults = results[year];
+    bin.bins = baseMonths.map((month) => {
+      return {
+        count: month in yearResults ? yearResults[month] : 0,
+        bin: month,
+      };
+    });
+    binData.push(bin);
+  });
+  return binData;
+};
 
 const DateResults = ({ surveyDates, selectedDate }) => {
   const [results, setResults] = useState({});
@@ -6,7 +32,6 @@ const DateResults = ({ surveyDates, selectedDate }) => {
 
   // Aggregates survey results first by year, then by month
   useEffect(() => {
-    console.log("use effect in date results");
     let overview = {};
     surveyDates.forEach((d) => {
       let yr = d.getFullYear();
@@ -32,27 +57,22 @@ const DateResults = ({ surveyDates, selectedDate }) => {
       ? Math.ceil(100 * (results[selectedYear].count / surveyDates.length))
       : 0;
 
-  // Returns an array of the distribution of month choices in the selected year
-  const monthDistribution =
-    selectedYear in results
-      ? Object.entries(results[selectedYear]).map(([month, count]) => {
-          return { month, count };
-        })
-      : [];
-
-  // Returns year distributions
-  const yearDistribution = Object.entries(results).map(([yearNum, entry]) => {
-    return { year: yearNum, count: entry.count };
-  });
+  const binData = generateBinData(results);
+  console.log(binData);
 
   return (
-    <div>
-      {sameYearShare}% of people also want to go during{" "}
-      {selectedYear === 2020
-        ? "the remaining months of 2020"
-        : `sometime in ${selectedYear}`}
-      .
-    </div>
+    <React.Fragment>
+      <div>
+        {sameYearShare}% of people also want to go during{" "}
+        {selectedYear === 2020
+          ? "the remaining months of 2020"
+          : `sometime in ${selectedYear}`}
+        .
+      </div>
+      {binData ? (
+        <Heatmap width={600} height={350} binData={binData} legendPct={true} />
+      ) : null}
+    </React.Fragment>
   );
 };
 
