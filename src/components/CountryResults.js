@@ -1,38 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Worldmap from "../components/Worldmap";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { ParentSize } from "@visx/responsive";
 
 const CountryResults = ({ surveyCountries, selectedCountry }) => {
-  const results = (() => {
-    let overview = {};
+  const [results, setResults] = useState({});
+  const [popular, setPopular] = useState({ count: 0 });
+
+  useEffect(() => {
+    const summary = {};
+    const n = surveyCountries.length;
+
     surveyCountries.forEach((c) => {
-      if (c.country in overview) {
-        overview[c.country] += 1;
+      if (c.isoNumeric3 in summary) {
+        summary[c.isoNumeric3].count += 1 / n;
+        const temp = summary[c.isoNumeric3];
+        if (popular.count < temp.count) {
+          Object.assign(popular, temp, { id: c.isoNumeric3 });
+        }
       } else {
-        overview[c.country] = 1;
+        summary[c.isoNumeric3] = { count: 1 / n, country: c.country };
       }
     });
 
-    const mostPopular = Object.entries(overview)
-      .sort((a, b) => b[1] - a[1])
-      .splice(0, 6);
+    setResults(summary);
+    setPopular(popular);
+  }, [surveyCountries, popular]);
 
-    return { overview, mostPopular };
-  })();
-
-  const getMostPopular = results.mostPopular[0][0];
-  const getSelectedCountryShare =
-    selectedCountry.country in results.overview
-      ? Math.ceil(
-          100 *
-            (results.overview[selectedCountry.country] / surveyCountries.length)
-        )
-      : 0;
+  const sameCountry =
+    selectedCountry.isoNumeric3 in results
+      ? [
+          results[selectedCountry.isoNumeric3].count * surveyCountries.length,
+          Math.ceil(
+            100 *
+              (results[selectedCountry.isoNumeric3].count /
+                surveyCountries.length)
+          ),
+        ]
+      : [0, 0];
 
   return (
-    <div>
-      {getSelectedCountryShare}% of respondents also chose{" "}
-      {selectedCountry.country}. The country most people want to go to is{" "}
-      {getMostPopular}.
-    </div>
+    <React.Fragment>
+      <Container maxWidth="md">
+        <Typography variant="body1" gutterBottom>
+          {sameCountry[1]}%, or {sameCountry[0]}, of {surveyCountries.length}{" "}
+          people "surveyed" {sameCountry[0] > 0 ? "also" : ""} chose{" "}
+          {selectedCountry.country}. The country on the most number of minds is{" "}
+          {popular.country}.
+        </Typography>
+      </Container>
+      {results ? (
+        <ParentSize>
+          {(parent) => (
+            <Worldmap
+              width={parent.width}
+              height={parent.width * (600 / 960)}
+              data={results}
+              popular={popular}
+              legend
+            />
+          )}
+        </ParentSize>
+      ) : null}
+      <Container maxWidth="md" style={{ marginBottom: "40px" }}>
+        <Typography variant="caption">
+          South Sudan, Kosovo and the Vatican City were excluded from the
+          "survey."
+        </Typography>
+      </Container>
+    </React.Fragment>
   );
 };
 

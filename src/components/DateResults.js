@@ -38,39 +38,43 @@ const DateResults = ({ surveyDates, selectedDate }) => {
 
   // Aggregates survey results first by year, then by month
   useEffect(() => {
-    let overview = {};
+    let summary = {};
     surveyDates.forEach((d) => {
       let yr = d.getFullYear();
       let m = d.getMonth();
 
-      if (yr in overview) {
-        overview[yr].count += 1;
-        m in overview[yr] ? (overview[yr][m] += 1) : (overview[yr][m] = 1);
+      if (yr in summary) {
+        summary[yr].count += 1;
+        m in summary[yr] ? (summary[yr][m] += 1) : (summary[yr][m] = 1);
       } else {
-        overview[yr] = {};
-        overview[yr].count = 1;
-        overview[yr][m] = 1;
+        summary[yr] = {};
+        summary[yr].count = 1;
+        summary[yr][m] = 1;
       }
     });
 
-    setResults(overview);
+    setResults(summary);
     setSelectedYear(selectedDate.getFullYear());
   }, [selectedDate, surveyDates]);
 
-  // Returns share of respondents who chose the same year
-  const sameYearShare =
+  // Returns count and share of respondents who chose the same year
+  const sameYear =
     selectedYear in results
-      ? Math.ceil(100 * (results[selectedYear].count / surveyDates.length))
-      : 0;
+      ? [
+          results[selectedYear].count,
+          Math.ceil(100 * (results[selectedYear].count / surveyDates.length)),
+        ]
+      : [0, 0];
 
   const [binData, colLabels] = generateBinData(results, surveyDates.length);
 
   return (
     <div>
       <Typography variant="body1" gutterBottom>
-        {sameYearShare}% of people also want to go during{" "}
+        {sameYear[0]}, or {sameYear[1]}%, of the {surveyDates.length} people
+        "surveyed" also want to go{" "}
         {selectedYear === 2020
-          ? "the remaining months of 2020"
+          ? "sometime in the remaining months of 2020"
           : `sometime in ${selectedYear}`}
         .
       </Typography>
@@ -81,9 +85,9 @@ const DateResults = ({ surveyDates, selectedDate }) => {
               width={parent.width}
               height={400}
               binData={binData}
-              legendPct={true}
               colLabels={colLabels}
               rowLabels={Object.values(monthAbbr)}
+              legend
             />
           )}
         </ParentSize>

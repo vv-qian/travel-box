@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h3" component="h1" className={classes.header}>
-        TRAVEL BOX.
+        TRAVELER.
       </Typography>
       <Typography
         variant="caption"
@@ -30,7 +30,7 @@ const Header = () => {
         className={classes.description}
         gutterBottom
       >
-        destination&nbsp;in&nbsp;mind
+        journeys&nbsp;in&nbsp;mind
       </Typography>
     </div>
   );

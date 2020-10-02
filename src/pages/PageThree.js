@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -63,54 +64,59 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
   });
 
   return (
-    <Grid container direction="column" alignItems="flex-start" spacing={5}>
-      <Grid container item spacing={5} className="surveyResults">
+    <React.Fragment>
+      <Container maxWidth="md">
         <Typography variant="h5" gutterBottom>
           Here's how other people's destinations and timing stack up against
           yours.
         </Typography>
-        <Grid item className={classes.body}>
-          <Subhed>Where?</Subhed>
-          <CountryResults
-            surveyCountries={sampleCountries}
-            selectedCountry={selectedCountry}
-          />
+        <Subhed>Where?</Subhed>
+      </Container>
+      <CountryResults
+        surveyCountries={sampleCountries}
+        selectedCountry={selectedCountry}
+      />
+      <Container maxWidth="md">
+        <Grid container direction="column" alignItems="flex-start" spacing={5}>
+          <Grid item className={classes.body}>
+            <Subhed>When?</Subhed>
+            <DateResults
+              surveyDates={sampleDates}
+              selectedDate={selectedDate}
+            />
+          </Grid>
+          <Grid container item spacing={5}>
+            {renderTopics.length > 0 ? (
+              <React.Fragment>
+                <Typography variant="h5" gutterBottom>
+                  And, here's some *info* of interest.
+                </Typography>
+                <Divider variant="middle" style={{ width: "100%" }} />
+              </React.Fragment>
+            ) : null}
+            {renderTopics}
+          </Grid>
+          <Grid
+            container
+            item
+            justify="space-between"
+            className="navigation"
+            spacing={3}
+          >
+            <Grid item>
+              <Link href="/">
+                <Button variant="contained">Choose another country</Button>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/info">
+                <Button variant="contained">Go back</Button>
+              </Link>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item className={classes.body}>
-          <Subhed>When?</Subhed>
-          <DateResults surveyDates={sampleDates} selectedDate={selectedDate} />
-        </Grid>
-      </Grid>
-      <Grid container item spacing={5} className="infoResults">
-        {renderTopics.length > 0 ? (
-          <React.Fragment>
-            <Typography variant="h5" gutterBottom>
-              And, here's some *info* of interest.
-            </Typography>
-            <Divider variant="middle" style={{ width: "100%" }} />
-          </React.Fragment>
-        ) : null}
-        {renderTopics}
-      </Grid>
-      <Grid
-        container
-        item
-        justify="space-between"
-        className="navigation"
-        spacing={3}
-      >
-        <Grid item>
-          <Link href="/">
-            <Button variant="contained">Choose another country</Button>
-          </Link>
-        </Grid>
-        <Grid item>
-          <Link href="/info">
-            <Button variant="contained">Go back</Button>
-          </Link>
-        </Grid>
-      </Grid>
-    </Grid>
+      </Container>
+    </React.Fragment>
   );
 };
 

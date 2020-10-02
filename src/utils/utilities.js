@@ -14,4 +14,7 @@ const shortenYear = (fullYear) => {
   return `'${fullYear.toString().slice(2)}`;
 };
 
-export { numberWithCommas, range, shortenYear };
+const max = (data, value) => Math.max(...data.map(value));
+const min = (data, value) => Math.min(...data.map(value));
+
+export { numberWithCommas, range, shortenYear, max, min };

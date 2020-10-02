@@ -19,7 +19,7 @@ const App = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Header />
         <Route path="/">
           <Container maxWidth="sm">
@@ -42,7 +42,7 @@ const App = () => {
           </Container>
         </Route>
         <Route path="/unbox">
-          <Container maxWidth="sm">
+          <Container maxWidth="lg">
             <PageThree
               selectedCountry={country}
               selectedDate={date}
