@@ -1187,7 +1187,37 @@ const countries = [
 ];
 
 const baseMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-const baseYears = [2020, 2021, 2022, 2023, 2024, 2025];
+const monthName = {
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
+const monthAbbr = {
+  1: "Jan.",
+  2: "Feb.",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "Aug.",
+  9: "Sept.",
+  10: "Oct.",
+  11: "Nov.",
+  12: "Dec.",
+};
+
+const baseYears = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
 const sampleSize = 1000;
 const sampleCountries = sampleWithReplacement(sampleSize, countries);
@@ -1202,4 +1232,12 @@ const sampleDates = sampleYears.map((year, i) => {
   return new Date(modyear, month);
 });
 
-export { topicOptions, countries, sampleCountries, sampleDates, baseMonths };
+export {
+  topicOptions,
+  countries,
+  sampleCountries,
+  sampleDates,
+  baseMonths,
+  monthName,
+  monthAbbr,
+};

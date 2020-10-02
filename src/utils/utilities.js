@@ -10,4 +10,8 @@ const range = (start, end) => {
   return list;
 };
 
-export { numberWithCommas, range };
+const shortenYear = (fullYear) => {
+  return `'${fullYear.toString().slice(2)}`;
+};
+
+export { numberWithCommas, range, shortenYear };

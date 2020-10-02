@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { baseMonths } from "../utils/data";
-import { range } from "../utils/utilities";
+import { baseMonths, monthAbbr } from "../utils/data";
+import { range, shortenYear } from "../utils/utilities";
 import Heatmap from "../components/Heatmap";
+import { ParentSize } from "@visx/responsive";
+import Typography from "@material-ui/core/Typography";
 
-const generateBinData = (results) => {
+// Generate binData for Heatmap, in manner of https://airbnb.io/visx/docs/heatmap
+const generateBinData = (results, n) => {
   if (!results) {
     return [];
   }
+
   let binData = [];
   const years = Object.keys(results);
   const yearRange = range(Math.min(...years), Math.max(...years));
-  // const binGap =
+  const yearLabels = [];
 
   yearRange.forEach((year, i) => {
     const bin = { bin: i + 1 };
     const yearResults = results[year];
     bin.bins = baseMonths.map((month) => {
       return {
-        count: month in yearResults ? yearResults[month] : 0,
+        count: month in yearResults ? yearResults[month] / n : 0,
         bin: month,
       };
     });
     binData.push(bin);
+
+    yearLabels.push(shortenYear(year));
   });
-  return binData;
+  return [binData, yearLabels];
 };
 
 const DateResults = ({ surveyDates, selectedDate }) => {
@@ -57,22 +63,32 @@ const DateResults = ({ surveyDates, selectedDate }) => {
       ? Math.ceil(100 * (results[selectedYear].count / surveyDates.length))
       : 0;
 
-  const binData = generateBinData(results);
-  console.log(binData);
+  const [binData, colLabels] = generateBinData(results, surveyDates.length);
 
   return (
-    <React.Fragment>
-      <div>
+    <div>
+      <Typography variant="body1" gutterBottom>
         {sameYearShare}% of people also want to go during{" "}
         {selectedYear === 2020
           ? "the remaining months of 2020"
           : `sometime in ${selectedYear}`}
         .
-      </div>
+      </Typography>
       {binData ? (
-        <Heatmap width={600} height={350} binData={binData} legendPct={true} />
+        <ParentSize>
+          {(parent) => (
+            <Heatmap
+              width={parent.width}
+              height={400}
+              binData={binData}
+              legendPct={true}
+              colLabels={colLabels}
+              rowLabels={Object.values(monthAbbr)}
+            />
+          )}
+        </ParentSize>
       ) : null}
-    </React.Fragment>
+    </div>
   );
 };
 

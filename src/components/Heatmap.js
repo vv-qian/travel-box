@@ -1,6 +1,7 @@
 import React from "react";
 import { scaleLinear } from "@visx/scale";
 import { HeatmapCircle } from "@visx/heatmap";
+import { Group } from "@visx/group";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
@@ -24,6 +25,13 @@ const useStyles = makeStyles(
       margin: "0 0.4rem",
       borderRadius: "1rem",
     },
+    rowlabel: {
+      textAnchor: "end",
+    },
+    caption: {
+      color: "#999",
+      fill: "#999",
+    },
   },
   { name: "Heatmap" }
 );
@@ -46,7 +54,15 @@ const max = (data, value) => Math.max(...data.map(value));
 const min = (data, value) => Math.min(...data.map(value));
 const countAccessor = (d) => d.count;
 
-const Heatmap = ({ width, height, binData, colors, legendPct }) => {
+const Heatmap = ({
+  width,
+  height,
+  binData,
+  colors,
+  legendPct,
+  rowLabels,
+  colLabels,
+}) => {
   const classes = useStyles();
 
   const countMax = max(binData, (d) => max(d.bins, countAccessor));
@@ -56,8 +72,11 @@ const Heatmap = ({ width, height, binData, colors, legendPct }) => {
   const binsYSize = max(binData, (d) => d.bins.length);
 
   const gap = 2;
-  const binSize = Math.abs(Math.min(width / binsXSize, height / binsYSize));
+  const margins = { top: 30, bottom: 10, label: gap * 4 };
+  const minHeight = height - margins.top - margins.bottom;
+  const binSize = Math.abs(Math.min(width / binsXSize, minHeight / binsYSize));
   const minWidth = Math.ceil(binsXSize * (binSize + gap));
+  const centerPos = (width - minWidth) / 2;
 
   const xScale = scaleLinear({
     domain: [0, binsXSize],
@@ -66,7 +85,7 @@ const Heatmap = ({ width, height, binData, colors, legendPct }) => {
 
   const yScale = scaleLinear({
     domain: [0, binsYSize],
-    range: [0, height],
+    range: [0, minHeight],
   });
 
   const usedColors = colors || defaultColors;
@@ -76,33 +95,85 @@ const Heatmap = ({ width, height, binData, colors, legendPct }) => {
     range: usedColors,
   });
 
-  const renderedlegend = legendPct ? (
+  const renderedLegend = legendPct ? (
     <div className={classes.legend}>
-      <Typography variant="caption">0</Typography>
+      <Typography variant="caption" className={classes.caption}>
+        0
+      </Typography>
       <div
         className={classes.colorblock}
         style={{
           background: `linear-gradient(to right, ${usedColors[0]}, ${usedColors[1]})`,
         }}
       ></div>
-      <Typography variant="caption">100%</Typography>
+      <Typography variant="caption" className={classes.caption}>
+        100%
+      </Typography>
     </div>
   ) : null;
 
-  return (
+  const x0 = xScale(0);
+  const y0 = yScale(0);
+  const renderedRowLbls =
+    rowLabels &&
+    !Number.isNaN(y0) &&
+    rowLabels.map((lbl, i) => {
+      return (
+        <Typography
+          variant="caption"
+          component="text"
+          key={`row-${i}-label`}
+          className={(classes.rowlabel, classes.caption)}
+          x={x0}
+          y={yScale(i + 1)}
+        >
+          {lbl}
+        </Typography>
+      );
+    });
+  const renderedColLbls =
+    colLabels &&
+    !Number.isNaN(y0) &&
+    colLabels.map((lbl, i) => {
+      return (
+        <Typography
+          key={`column-${i}-label`}
+          variant="caption"
+          component="text"
+          className={classes.caption}
+          x={xScale(i) + gap}
+          y={y0}
+        >
+          {lbl}
+        </Typography>
+      );
+    });
+
+  return width < 10 ? null : (
     <div className={classes.root}>
-      {renderedlegend}
+      {renderedLegend}
       <div>
-        {/* add month labels and year labels */}
-        <svg width={minWidth} height={height}>
-          <HeatmapCircle
-            data={binData}
-            xScale={xScale}
-            yScale={yScale}
-            colorScale={colorScale}
-            radius={binSize / 2}
-            gap={gap}
-          ></HeatmapCircle>
+        <svg width={width} height={height}>
+          <Group
+            className={classes.rowlabel}
+            top={margins.top - margins.label}
+            left={centerPos - margins.label}
+          >
+            {renderedRowLbls}
+          </Group>
+          <Group top={margins.top - margins.label} left={centerPos}>
+            {renderedColLbls}
+          </Group>
+          <Group top={margins.top} left={centerPos}>
+            <HeatmapCircle
+              data={binData}
+              xScale={xScale}
+              yScale={yScale}
+              colorScale={colorScale}
+              radius={binSize / 2}
+              gap={gap}
+            ></HeatmapCircle>
+          </Group>
         </svg>
       </div>
     </div>

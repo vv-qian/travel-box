@@ -1,27 +1,36 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    margin: "2rem 0 4rem",
+    textAlign: "center",
+  },
+  header: {
+    display: "inline-block",
+    letterSpacing: "0.3rem",
+    color: "coral",
+  },
+  description: {
+    color: "coral",
+  },
+});
 
 const Header = () => {
+  const classes = useStyles();
   return (
-    <div className="header" style={{ margin: "2rem 0", textAlign: "center" }}>
-      <Typography
-        variant="h3"
-        component="h1"
-        style={{
-          display: "inline-block",
-          letterSpacing: "0.3rem",
-          color: "coral",
-        }}
-      >
+    <div className={classes.root}>
+      <Typography variant="h3" component="h1" className={classes.header}>
         TRAVEL BOX.
       </Typography>
       <Typography
         variant="caption"
         component="span"
-        style={{ color: "coral" }}
+        className={classes.description}
         gutterBottom
       >
-        destination in mind
+        destination&nbsp;in&nbsp;mind
       </Typography>
     </div>
   );
