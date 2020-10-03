@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Link from "../components/Link";
 import Subhed from "../components/Subhed";
 
 const topicButtonStyles = makeStyles(
@@ -71,9 +72,9 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
       </Grid>
       <Grid container item justify="space-between">
         <Grid item>
-          <Link href="/unbox">
+          <NavLink to="/unbox">
             <Button variant="contained">See results</Button>
-          </Link>
+          </NavLink>
         </Grid>
       </Grid>
     </Grid>

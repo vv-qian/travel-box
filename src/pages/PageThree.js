@@ -1,4 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
@@ -6,7 +8,6 @@ import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
-import Link from "../components/Link";
 import Subhed from "../components/Subhed";
 import CountryResults from "../components/CountryResults";
 import DateResults from "../components/DateResults";
@@ -104,14 +105,14 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
             spacing={3}
           >
             <Grid item>
-              <Link href="/">
+              <NavLink to="/">
                 <Button variant="contained">Choose another country</Button>
-              </Link>
+              </NavLink>
             </Grid>
             <Grid item>
-              <Link href="/info">
+              <NavLink to="/info">
                 <Button variant="contained">Go back</Button>
-              </Link>
+              </NavLink>
             </Grid>
           </Grid>
         </Grid>

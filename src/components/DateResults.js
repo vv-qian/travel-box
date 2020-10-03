@@ -62,7 +62,7 @@ const DateResults = ({ surveyDates, selectedDate }) => {
     selectedYear in results
       ? [
           results[selectedYear].count,
-          Math.ceil(100 * (results[selectedYear].count / surveyDates.length)),
+          Math.floor(100 * (results[selectedYear].count / surveyDates.length)),
         ]
       : [0, 0];
 

@@ -32,11 +32,9 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
     selectedCountry.isoNumeric3 in results
       ? [
           results[selectedCountry.isoNumeric3].count * surveyCountries.length,
-          Math.ceil(
-            100 *
-              (results[selectedCountry.isoNumeric3].count /
-                surveyCountries.length)
-          ),
+          100 *
+            (results[selectedCountry.isoNumeric3].count /
+              surveyCountries.length),
         ]
       : [0, 0];
 
@@ -44,10 +42,10 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
     <React.Fragment>
       <Container maxWidth="md">
         <Typography variant="body1" gutterBottom>
-          {sameCountry[1]}%, or {sameCountry[0]}, of {surveyCountries.length}{" "}
-          people "surveyed" {sameCountry[0] > 0 ? "also" : ""} chose{" "}
-          {selectedCountry.country}. The country on the most number of minds is{" "}
-          {popular.country}.
+          {sameCountry[0]} of {surveyCountries.length} people "surveyed"{" "}
+          {sameCountry[0] > 0 ? "also" : ""} chose {selectedCountry.country}.
+          Most popular choice is {popular.country}, which{" "}
+          {popular.count * surveyCountries.length} people chose.
         </Typography>
       </Container>
       {results ? (
