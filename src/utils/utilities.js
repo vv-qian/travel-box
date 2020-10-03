@@ -17,4 +17,13 @@ const shortenYear = (fullYear) => {
 const max = (data, value) => Math.max(...data.map(value));
 const min = (data, value) => Math.min(...data.map(value));
 
-export { numberWithCommas, range, shortenYear, max, min };
+const getStepGap = (num) => {
+  for (let i = Math.floor(num / 2) - (num > 10 ? 1 : 0); i > 1; i--) {
+    if (num % i === 0) {
+      return i;
+    }
+  }
+  return num;
+};
+
+export { numberWithCommas, range, shortenYear, max, min, getStepGap };

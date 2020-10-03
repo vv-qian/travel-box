@@ -11,9 +11,8 @@ import Container from "@material-ui/core/Container";
 import { topicOptions, countries } from "./utils/data";
 
 const App = () => {
-  // TODO: change states to null
-  const [country, setCountry] = useState(countries[0]);
-  const [date, setDate] = useState(new Date());
+  const [country, setCountry] = useState(null);
+  const [date, setDate] = useState(null);
   const [info, setInfo] = useState([]);
 
   return (

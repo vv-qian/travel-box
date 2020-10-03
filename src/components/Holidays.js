@@ -2,8 +2,23 @@ import React, { useState, useEffect } from "react";
 import { holidayHttp } from "../apis/http";
 import { monthName } from "../utils/data";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  title: {
+    color: "#000",
+    fontWeight: 500,
+  },
+  date: {
+    display: "block",
+  },
+  description: {
+    fontStyle: "italic",
+  },
+});
 
 const Holidays = ({ isoAlpha2, year, month }) => {
+  const classes = useStyles();
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -16,12 +31,12 @@ const Holidays = ({ isoAlpha2, year, month }) => {
         },
       });
       setResults(data.response.holidays);
+      console.log("Holidays: ", data.response.holidays);
     };
 
     retrieve();
   }, [isoAlpha2, year, month]);
 
-  // TODO: apply styles using makeStyles
   const renderedList = results
     .slice(0, 5)
     .map(({ name, description, date }, i) => {
@@ -31,20 +46,17 @@ const Holidays = ({ isoAlpha2, year, month }) => {
         day: "numeric",
       });
       return (
-        <li key={`holiday-${i}`} className="holiday_item">
-          <Typography
-            variant="subtitle1"
-            style={{ color: "black", fontWeight: 500 }}
-          >
+        <li key={`holiday-${i}`}>
+          <Typography variant="subtitle1" className={classes.title}>
             {name}
           </Typography>
-          <Typography variant="overline" display="block">
+          <Typography variant="overline" className={classes.date}>
             {datestring}
           </Typography>
           <Typography
             variant="body2"
             gutterBottom
-            style={{ fontStyle: "italic" }}
+            className={classes.description}
           >
             {description}
           </Typography>

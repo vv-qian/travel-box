@@ -41,6 +41,7 @@ const Search = ({ term, cap }) => {
         },
       });
       setResults(data.query.search);
+      console.log("Search: ", data.query.search);
     };
 
     search();

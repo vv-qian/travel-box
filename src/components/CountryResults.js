@@ -6,46 +6,42 @@ import { ParentSize } from "@visx/responsive";
 
 const CountryResults = ({ surveyCountries, selectedCountry }) => {
   const [results, setResults] = useState({});
-  const [popular, setPopular] = useState({ count: 0 });
+  const [popular, setPopular] = useState({});
 
   useEffect(() => {
     const summary = {};
-    const n = surveyCountries.length;
+    let popularCountry = { count: 0 };
 
     surveyCountries.forEach((c) => {
       if (c.isoNumeric3 in summary) {
-        summary[c.isoNumeric3].count += 1 / n;
+        summary[c.isoNumeric3].count += 1;
         const temp = summary[c.isoNumeric3];
-        if (popular.count < temp.count) {
-          Object.assign(popular, temp, { id: c.isoNumeric3 });
+        if (popularCountry.count < temp.count) {
+          Object.assign(popularCountry, temp, { id: c.isoNumeric3 });
         }
       } else {
-        summary[c.isoNumeric3] = { count: 1 / n, country: c.country };
+        summary[c.isoNumeric3] = { count: 1, country: c.country };
       }
     });
 
     setResults(summary);
-    setPopular(popular);
-  }, [surveyCountries, popular]);
+    setPopular(popularCountry);
+    console.log("Country results: ", summary);
+  }, [surveyCountries]);
 
   const sameCountry =
     selectedCountry.isoNumeric3 in results
-      ? [
-          results[selectedCountry.isoNumeric3].count * surveyCountries.length,
-          100 *
-            (results[selectedCountry.isoNumeric3].count /
-              surveyCountries.length),
-        ]
-      : [0, 0];
+      ? results[selectedCountry.isoNumeric3].count
+      : 0;
 
   return (
     <React.Fragment>
       <Container maxWidth="md">
         <Typography variant="body1" gutterBottom>
-          {sameCountry[0]} of {surveyCountries.length} people "surveyed"{" "}
-          {sameCountry[0] > 0 ? "also" : ""} chose {selectedCountry.country}.
-          Most popular choice is {popular.country}, which{" "}
-          {popular.count * surveyCountries.length} people chose.
+          {sameCountry} of {surveyCountries.length} people "surveyed"{" "}
+          {sameCountry > 0 ? "also" : ""} chose {selectedCountry.country}. One
+          of the most popular choices is {popular.country}, which{" "}
+          {popular.count} people chose.
         </Typography>
       </Container>
       {results ? (
@@ -55,7 +51,6 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
               width={parent.width}
               height={parent.width * (600 / 960)}
               data={results}
-              popular={popular}
               legend
             />
           )}

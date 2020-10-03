@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { baseMonths, monthAbbr } from "../utils/data";
+import { baseMonths, monthAbbr, monthName } from "../utils/data";
 import { range, shortenYear } from "../utils/utilities";
 import Heatmap from "../components/Heatmap";
 import { ParentSize } from "@visx/responsive";
@@ -35,10 +35,13 @@ const generateBinData = (results, n) => {
 const DateResults = ({ surveyDates, selectedDate }) => {
   const [results, setResults] = useState({});
   const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(selectedDate.getMonth());
+  const [popular, setPopular] = useState({});
 
   // Aggregates survey results first by year, then by month
   useEffect(() => {
     let summary = {};
+    let popularDate = { count: 0 };
     surveyDates.forEach((d) => {
       let yr = d.getFullYear();
       let m = d.getMonth();
@@ -46,6 +49,14 @@ const DateResults = ({ surveyDates, selectedDate }) => {
       if (yr in summary) {
         summary[yr].count += 1;
         m in summary[yr] ? (summary[yr][m] += 1) : (summary[yr][m] = 1);
+        if (m in summary[yr]) {
+          summary[yr][m] += 1;
+          if (popularDate.count < summary[yr][m]) {
+            popularDate = { month: m, count: summary[yr][m], year: yr };
+          }
+        } else {
+          summary[yr][m] = 1;
+        }
       } else {
         summary[yr] = {};
         summary[yr].count = 1;
@@ -55,28 +66,34 @@ const DateResults = ({ surveyDates, selectedDate }) => {
 
     setResults(summary);
     setSelectedYear(selectedDate.getFullYear());
+    setSelectedMonth(selectedDate.getMonth());
+    setPopular(popularDate);
+    console.log("Time results: ", summary);
   }, [selectedDate, surveyDates]);
 
-  // Returns count and share of respondents who chose the same year
-  const sameYear =
+  const [sameYear, sameMonth] =
     selectedYear in results
       ? [
           results[selectedYear].count,
-          Math.floor(100 * (results[selectedYear].count / surveyDates.length)),
+          selectedMonth in results[selectedYear]
+            ? results[selectedYear][selectedMonth]
+            : 0,
         ]
       : [0, 0];
 
-  const [binData, colLabels] = generateBinData(results, surveyDates.length);
+  const [binData, colLabels] = generateBinData(results, 1);
 
   return (
     <div>
       <Typography variant="body1" gutterBottom>
-        {sameYear[0]}, or {sameYear[1]}%, of the {surveyDates.length} people
-        "surveyed" also want to go{" "}
+        {sameYear} of the {surveyDates.length} people "surveyed" want
+        {sameYear > 1 ? "" : "s"} to go{" "}
         {selectedYear === 2020
           ? "sometime in the remaining months of 2020"
-          : `sometime in ${selectedYear}`}
-        .
+          : `sometime in ${selectedYear}`}{" "}
+        — {sameMonth} chose {monthName[selectedMonth + 1]}, as you did.{" "}
+        {monthName[popular.month + 1]} {popular.year} is one of the most popular
+        times — {popular.count} would choose to go then.
       </Typography>
       {binData ? (
         <ParentSize>

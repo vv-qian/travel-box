@@ -22,10 +22,14 @@ const useStyles = makeStyles({
   body: {
     width: "100%",
   },
+  break: {
+    marginBottom: "40px", // grid spacing(5) => 5 * 8px = 40px
+  },
 });
 
 const PageThree = ({ selectedCountry, selectedDate, topics }) => {
   const classes = useStyles();
+
   const renderTopics = topics.map((topic, i) => {
     if (topic === "forex") {
       return (
@@ -55,7 +59,7 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
     if (topic === "anything") {
       return (
         <Grid item key={`topic-${topic}-${i}`} className={classes.body}>
-          <Subhed>Launchpad</Subhed>
+          <Subhed>Launchpad for More 'Anything'</Subhed>
           <Search term={`${selectedCountry.country}`} cap="5" />
         </Grid>
       );
@@ -64,12 +68,20 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
     return null;
   });
 
-  return (
+  return selectedCountry ? (
     <React.Fragment>
+      <Container maxWidth="md" className={classes.break}>
+        <Grid container direction="column" alignItems="flex-start" spacing={5}>
+          {renderTopics}
+        </Grid>
+      </Container>
+      {renderTopics.length > 0 ? (
+        <Divider variant="middle" className={(classes.body, classes.break)} />
+      ) : null}
       <Container maxWidth="md">
-        <Typography variant="h5" gutterBottom>
-          Here's how other people's destinations and timing stack up against
-          yours.
+        <Typography variant="h5" className={classes.break}>
+          We asked other people what journeys are on their minds. Here's a
+          summary look of the "where" and the "when."
         </Typography>
         <Subhed>Where?</Subhed>
       </Container>
@@ -77,47 +89,40 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
         surveyCountries={sampleCountries}
         selectedCountry={selectedCountry}
       />
+      <Container maxWidth="md" className={(classes.body, classes.break)}>
+        <Subhed>When?</Subhed>
+        <DateResults surveyDates={sampleDates} selectedDate={selectedDate} />
+      </Container>
       <Container maxWidth="md">
-        <Grid container direction="column" alignItems="flex-start" spacing={5}>
-          <Grid item className={classes.body}>
-            <Subhed>When?</Subhed>
-            <DateResults
-              surveyDates={sampleDates}
-              selectedDate={selectedDate}
-            />
+        <Grid container justify="space-between" spacing={5}>
+          <Grid item>
+            <NavLink to="/">
+              <Button variant="contained">Choose another country</Button>
+            </NavLink>
           </Grid>
-          <Grid container item spacing={5}>
-            {renderTopics.length > 0 ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  And, here's some *info* of interest.
-                </Typography>
-                <Divider variant="middle" style={{ width: "100%" }} />
-              </React.Fragment>
-            ) : null}
-            {renderTopics}
-          </Grid>
-          <Grid
-            container
-            item
-            justify="space-between"
-            className="navigation"
-            spacing={3}
-          >
-            <Grid item>
-              <NavLink to="/">
-                <Button variant="contained">Choose another country</Button>
-              </NavLink>
-            </Grid>
-            <Grid item>
-              <NavLink to="/info">
-                <Button variant="contained">Go back</Button>
-              </NavLink>
-            </Grid>
+          <Grid item>
+            <NavLink to="/info">
+              <Button variant="contained">Go back</Button>
+            </NavLink>
           </Grid>
         </Grid>
       </Container>
     </React.Fragment>
+  ) : (
+    <Container maxWidth="sm">
+      <Grid container direction="column" justify="space-between" spacing={5}>
+        <Grid item>
+          <Typography variant="body1">
+            Hi Traveler, kindly choose a country and a date.
+          </Typography>
+        </Grid>
+        <Grid item>
+          <NavLink to="/">
+            <Button variant="contained">Choose a country</Button>
+          </NavLink>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

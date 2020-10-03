@@ -11,6 +11,7 @@ const Forex = ({ currencyCode, currencyName }) => {
     const retrieve = async () => {
       const { data } = await forexHttp.get("/live");
       setResults(data.quotes);
+      console.log("Forex: ", data.quotes);
     };
 
     retrieve();

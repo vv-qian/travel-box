@@ -18,6 +18,7 @@ const PageOne = ({
   currentDate,
   currentCountry,
 }) => {
+  const disableButton = currentCountry === null || currentDate === null;
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container direction="column" alignItems="flex-start" spacing={5}>
@@ -43,20 +44,14 @@ const PageOne = ({
         <Grid container item justify="space-between">
           <Grid item>
             <NavLink to="/info">
-              <Button
-                variant="contained"
-                disabled={currentCountry === null || currentDate === null}
-              >
+              <Button variant="contained" disabled={disableButton}>
                 Continue
               </Button>
             </NavLink>
           </Grid>
           <Grid item>
             <NavLink to="/unbox">
-              <Button
-                variant="contained"
-                disabled={currentCountry === null || currentDate === null}
-              >
+              <Button variant="contained" disabled={disableButton}>
                 Skip to end
               </Button>
             </NavLink>

@@ -6,6 +6,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 import Subhed from "../components/Subhed";
 
@@ -55,7 +56,7 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
     );
   });
 
-  return (
+  return country ? (
     <Grid container direction="column" alignItems="flex-start" spacing={5}>
       <Grid item>
         <Subhed>
@@ -70,12 +71,30 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
           {renderToggleButtons}
         </ToggleButtonGroup>
       </Grid>
-      <Grid container item justify="space-between">
+      <Grid container item justify="space-between" spacing={5}>
         <Grid item>
           <NavLink to="/unbox">
             <Button variant="contained">See results</Button>
           </NavLink>
         </Grid>
+        <Grid item>
+          <NavLink to="/">
+            <Button variant="contained">Go back</Button>
+          </NavLink>
+        </Grid>
+      </Grid>
+    </Grid>
+  ) : (
+    <Grid container direction="column" alignItems="flex-start" spacing={5}>
+      <Grid item>
+        <Typography variant="body1">
+          Hi Traveler, kindly go back, and select a country and a date.
+        </Typography>
+      </Grid>
+      <Grid item>
+        <NavLink to="/">
+          <Button variant="contained">Go back</Button>
+        </NavLink>
       </Grid>
     </Grid>
   );

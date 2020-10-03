@@ -1401,7 +1401,7 @@ const monthAbbr = {
 
 const baseYears = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
-const sampleSize = Math.floor(Math.random() * 1000);
+const sampleSize = 500;
 const sampleCountries = sampleWithReplacement(sampleSize, countries);
 const sampleMonths = sampleWithReplacement(sampleSize, baseMonths);
 const sampleYears = sampleWithReplacement(sampleSize, baseYears);

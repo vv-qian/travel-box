@@ -25,7 +25,10 @@ const useStyles = makeStyles(
   { name: "Heatmap" }
 );
 
-//  binData
+const defaultColors = ["#fff", "#3182bd"];
+const countAccessor = (d) => d.count;
+
+//  binData data structure per https://airbnb.io/visx/docs/heatmap
 // [
 //     {
 //       bin: 1, // x
@@ -37,9 +40,6 @@ const useStyles = makeStyles(
 //       ],
 //     },
 //   ];
-
-const defaultColors = ["#ece7f2", "#2b8cbe"];
-const countAccessor = (d) => d.count;
 
 const Heatmap = ({
   width,
@@ -76,7 +76,6 @@ const Heatmap = ({
   });
 
   const usedColors = colors || defaultColors;
-
   const colorScale = scaleLinear({
     domain: [countMin, countMax],
     range: usedColors,
@@ -84,8 +83,8 @@ const Heatmap = ({
 
   const renderedLegend = legend ? (
     <GradientLegend
-      minLabel={countMin}
-      maxLabel={`${(countMax * 100).toFixed(1)}%`}
+      minLabel="Less"
+      maxLabel="More"
       minColor={usedColors[0]}
       maxColor={usedColors[1]}
     />
@@ -127,7 +126,7 @@ const Heatmap = ({
                       variant="caption"
                       component="text"
                       className={classes.caption}
-                      x={xScale(i) + gap}
+                      x={xScale(i) + margins.label}
                       y={0}
                     >
                       {lbl}
@@ -143,6 +142,7 @@ const Heatmap = ({
               yScale={yScale}
               colorScale={colorScale}
               radius={binSize / 2}
+              stroke="#ccc"
               gap={gap}
             ></HeatmapCircle>
           </Group>
