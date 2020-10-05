@@ -25,6 +25,9 @@ const useStyles = makeStyles({
   break: {
     marginBottom: "40px", // grid spacing(5) => 5 * 8px = 40px
   },
+  anything: {
+    minHeight: "500px",
+  },
 });
 
 const PageThree = ({ selectedCountry, selectedDate, topics }) => {
@@ -70,13 +73,22 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
 
   return selectedCountry ? (
     <React.Fragment>
-      <Container maxWidth="md" className={classes.break}>
-        <Grid container direction="column" alignItems="flex-start" spacing={5}>
-          {renderTopics}
-        </Grid>
-      </Container>
       {renderTopics.length > 0 ? (
-        <Divider variant="middle" className={(classes.body, classes.break)} />
+        <div
+          className={topics.indexOf("anything") > -1 ? classes.anything : ""}
+        >
+          <Container maxWidth="md" className={classes.break}>
+            <Grid
+              container
+              direction="column"
+              alignItems="flex-start"
+              spacing={5}
+            >
+              {renderTopics}
+            </Grid>
+          </Container>
+          <Divider variant="middle" className={(classes.body, classes.break)} />
+        </div>
       ) : null}
       <Container maxWidth="md">
         <Typography variant="h5" className={classes.break}>
@@ -102,7 +114,7 @@ const PageThree = ({ selectedCountry, selectedDate, topics }) => {
           </Grid>
           <Grid item>
             <NavLink to="/info">
-              <Button variant="contained">Go back</Button>
+              <Button variant="contained">Choose topics again</Button>
             </NavLink>
           </Grid>
         </Grid>

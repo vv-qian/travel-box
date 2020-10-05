@@ -6,7 +6,6 @@ const Forex = ({ currencyCode, currencyName }) => {
   const [results, setResults] = useState([]);
   const latest = new Date().getDate();
 
-  // TODO: cache these by hour
   useEffect(() => {
     const retrieve = async () => {
       const { data } = await forexHttp.get("/live");

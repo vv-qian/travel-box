@@ -77,11 +77,6 @@ const PageTwo = ({ country, onInfoSelect, topicOptions }) => {
             <Button variant="contained">See results</Button>
           </NavLink>
         </Grid>
-        <Grid item>
-          <NavLink to="/">
-            <Button variant="contained">Go back</Button>
-          </NavLink>
-        </Grid>
       </Grid>
     </Grid>
   ) : (
