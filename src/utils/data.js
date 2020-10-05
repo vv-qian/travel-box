@@ -1385,18 +1385,18 @@ const monthName = {
 };
 
 const monthAbbr = {
-  1: "Jan.",
-  2: "Feb.",
-  3: "March",
-  4: "April",
+  1: "Jan",
+  2: "Feb",
+  3: "Mar",
+  4: "Apr",
   5: "May",
   6: "June",
   7: "July",
-  8: "Aug.",
-  9: "Sept.",
-  10: "Oct.",
-  11: "Nov.",
-  12: "Dec.",
+  8: "Aug",
+  9: "Sep",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
 };
 
 const baseYears = [2020, 2021, 2022, 2023, 2024, 2025, 2026];

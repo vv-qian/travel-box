@@ -59,9 +59,14 @@ const Heatmap = ({
   const binsYSize = max(binData, (d) => d.bins.length);
 
   const gap = 2;
-  const margins = { top: 30, bottom: 10, label: gap * 4 };
+  const margins = { top: 30, bottom: 10, left: 70, right: 0, label: gap * 2 };
   const minHeight = height - margins.top - margins.bottom;
-  const binSize = Math.abs(Math.min(width / binsXSize, minHeight / binsYSize));
+  const binSize = Math.abs(
+    Math.min(
+      (width - margins.right - margins.left) / binsXSize,
+      minHeight / binsYSize
+    )
+  );
   const minWidth = Math.ceil(binsXSize * (binSize + gap));
   const centerX = (width - minWidth) / 2;
 
@@ -90,14 +95,14 @@ const Heatmap = ({
     />
   ) : null;
 
-  return width < 10 ? null : (
+  return centerX < 10 ? null : (
     <div className={classes.root}>
       {renderedLegend}
       <div>
         <svg width={width} height={height}>
           <Group
             className={classes.rowlabel}
-            top={margins.top - margins.label}
+            top={margins.top - margins.label - binSize / 3}
             left={centerX - margins.label}
           >
             {rowLabels

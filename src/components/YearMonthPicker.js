@@ -11,6 +11,7 @@ const YearMonthPicker = ({ onDateChange, currentDate }) => {
       views={["year", "month"]}
       label="Choose a year and month"
       minDate={new Date()}
+      maxDate={new Date("2026-12-31")}
       value={selectedDate}
       style={{ width: 350 }}
       onChange={(date) => {

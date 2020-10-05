@@ -10,7 +10,7 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
 
   useEffect(() => {
     const summary = {};
-    let popularCountry = { count: 0 };
+    const popularCountry = { count: 0 };
 
     surveyCountries.forEach((c) => {
       if (c.isoNumeric3 in summary) {
@@ -39,7 +39,8 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
       <Container maxWidth="md">
         <Typography variant="body1" gutterBottom>
           {sameCountry} of {surveyCountries.length} people "surveyed"{" "}
-          {sameCountry > 0 ? "also" : ""} chose {selectedCountry.country}. One
+          {sameCountry > 0 ? "also" : ""} chose{" "}
+          <span style={{ color: "coral" }}>{selectedCountry.country}</span>. One
           of the most popular choices is {popular.country}, which{" "}
           {popular.count} people chose.
         </Typography>
@@ -51,6 +52,7 @@ const CountryResults = ({ surveyCountries, selectedCountry }) => {
               width={parent.width}
               height={parent.width * (600 / 960)}
               data={results}
+              highlightCountry={selectedCountry}
               legend
             />
           )}

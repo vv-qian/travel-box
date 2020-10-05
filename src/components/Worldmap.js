@@ -11,7 +11,11 @@ import { schemeBlues } from "d3-scale-chromatic";
 
 const useStyles = makeStyles(
   {
-    root: { display: "flex", flexDirection: "column", alignItems: "center" },
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
     legendLabels: {
       display: "flex",
       flexDirection: "row",
@@ -26,7 +30,14 @@ const useStyles = makeStyles(
 const countries = topojson.feature(world, world.objects.countries);
 
 // data is keyed by country's isoNumeric3 id
-const Worldmap = ({ width, height, data, colors, legend }) => {
+const Worldmap = ({
+  width,
+  height,
+  data,
+  colors,
+  highlightCountry,
+  legend,
+}) => {
   const classes = useStyles();
 
   const valueMax = max(Object.values(data), (d) => d.count);
@@ -99,7 +110,9 @@ const Worldmap = ({ width, height, data, colors, legend }) => {
                   d={path || ""}
                   fill={
                     data[feature.id]
-                      ? colorScale(data[feature.id].count)
+                      ? +feature.id === +highlightCountry.isoNumeric3
+                        ? "coral"
+                        : colorScale(data[feature.id].count)
                       : "#fff"
                   }
                   stroke="#999"

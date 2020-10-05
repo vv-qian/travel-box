@@ -11,23 +11,20 @@ const generateBinData = (results, n) => {
     return [];
   }
 
-  let binData = [];
+  const binData = [];
   const years = Object.keys(results);
   const yearRange = range(Math.min(...years), Math.max(...years));
-  const yearLabels = [];
+  const yearLabels = yearRange.map((year) => shortenYear(year));
 
-  yearRange.forEach((year, i) => {
+  baseMonths.forEach((month, i) => {
     const bin = { bin: i + 1 };
-    const yearResults = results[year];
-    bin.bins = baseMonths.map((month) => {
+    bin.bins = yearRange.map((year, i) => {
       return {
-        count: month in yearResults ? yearResults[month] / n : 0,
-        bin: month,
+        count: month in results[year] ? results[year][month] / n : 0,
+        bin: i,
       };
     });
     binData.push(bin);
-
-    yearLabels.push(shortenYear(year));
   });
   return [binData, yearLabels];
 };
@@ -40,11 +37,11 @@ const DateResults = ({ surveyDates, selectedDate }) => {
 
   // Aggregates survey results first by year, then by month
   useEffect(() => {
-    let summary = {};
+    const summary = {};
     let popularDate = { count: 0 };
     surveyDates.forEach((d) => {
-      let yr = d.getFullYear();
-      let m = d.getMonth();
+      const yr = d.getFullYear();
+      const m = d.getMonth();
 
       if (yr in summary) {
         summary[yr].count += 1;
@@ -52,7 +49,11 @@ const DateResults = ({ surveyDates, selectedDate }) => {
         if (m in summary[yr]) {
           summary[yr][m] += 1;
           if (popularDate.count < summary[yr][m]) {
-            popularDate = { month: m, count: summary[yr][m], year: yr };
+            popularDate = {
+              month: m,
+              count: summary[yr][m],
+              year: yr,
+            };
           }
         } else {
           summary[yr][m] = 1;
@@ -100,10 +101,10 @@ const DateResults = ({ surveyDates, selectedDate }) => {
           {(parent) => (
             <Heatmap
               width={parent.width}
-              height={400}
+              height={300}
               binData={binData}
-              colLabels={colLabels}
-              rowLabels={Object.values(monthAbbr)}
+              rowLabels={colLabels}
+              colLabels={Object.values(monthAbbr)}
               legend
             />
           )}

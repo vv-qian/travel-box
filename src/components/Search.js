@@ -57,7 +57,9 @@ const Search = ({ term, cap }) => {
           <Typography
             variant="body2"
             className={classes.snippet}
-            dangerouslySetInnerHTML={{ __html: result.snippet + "..." }}
+            dangerouslySetInnerHTML={{
+              __html: result.snippet + "...",
+            }}
           />
         </CardContent>
         <CardActions>
