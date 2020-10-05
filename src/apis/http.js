@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const forexHttp = axios.create({
-  baseURL: "http://api.currencylayer.com",
+  baseURL: "https://api.currencylayer.com",
   params: {
     access_key: "2be2df7519e3d3b50214076fe8ad1d76",
   },
